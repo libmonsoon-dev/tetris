@@ -6,11 +6,13 @@ package shape
 
 import "math/rand"
 
+const choiceRandomPanicMsg = "Impossible to get item from empty slice"
+
 func choiceRandomShape(list []Shape) Shape {
 	listLength := len(list)
 
 	if listLength == 0 {
-		panic("Impossible to get item from empty slice")
+		panic(choiceRandomPanicMsg)
 	}
 
 	index := rand.Intn(listLength)

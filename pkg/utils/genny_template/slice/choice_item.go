@@ -6,13 +6,15 @@ import (
 	"github.com/cheekybits/genny/generic"
 )
 
-type T generic.Type
+type Δ generic.Type
 
-func choiceRandomT(list []T) T {
+const choiceRandomPanicMsg = "Impossible to get item from empty slice"
+
+func choiceRandomΔ(list []Δ) Δ {
 	listLength := len(list)
 
 	if listLength == 0 {
-		panic("Impossible to get item from empty slice")
+		panic(choiceRandomPanicMsg)
 	}
 
 	index := rand.Intn(listLength)
