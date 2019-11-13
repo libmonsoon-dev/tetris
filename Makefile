@@ -10,7 +10,7 @@ BUILD_FOLDER = build
 MOBILE_EMULATOR_BIN = $(BUILD_FOLDER)/$(PROJECT_NAME)-desktop
 # MAKEFLAGS += --silent
 
-all: build-folder build-cli build-android build-web build-mobile-emulator
+all: tools build-folder build-cli build-android build-web build-mobile-emulator
 
 build-folder:
 	@mkdir -p $(BUILD_FOLDER)
@@ -41,7 +41,9 @@ run-mobile-emulator: build-mobile-emulator
 
 tools:
 	$(GO_CMD) get golang.org/x/mobile/cmd/gomobile \
-		github.com/sqs/goreturns
+		github.com/sqs/goreturns \
+		github.com/cheekybits/genny \
+
 dev:
 	$(GO_CMD) run entrypoint/dev/tetris.go
 
