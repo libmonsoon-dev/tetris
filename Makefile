@@ -10,7 +10,7 @@ BUILD_FOLDER = build
 MOBILE_EMULATOR_BIN = $(BUILD_FOLDER)/$(PROJECT_NAME)-desktop
 # MAKEFLAGS += --silent
 
-all: build-folder build-cli build-android build-web build-desktop
+all: build-folder build-cli build-android build-web build-mobile-emulator
 
 build-folder:
 	@mkdir -p $(BUILD_FOLDER)
