@@ -34,7 +34,7 @@ build-web: pre-build
 
 build-mobile-emulator: pre-build
 	@echo 'Building mobile version for desktop'
-	$(GO_CMD) build $(LD_FLAGS) -o $(MOBILE_EMULATOR_BIN) entrypoint/mobile/main.go
+	$(GO_CMD) build $(LD_FLAGS) -o $(MOBILE_EMULATOR_BIN) entrypoint/mobile/tetris.go
 
 run-mobile-emulator: build-mobile-emulator
 	$(MOBILE_EMULATOR_BIN)
