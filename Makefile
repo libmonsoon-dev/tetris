@@ -42,6 +42,8 @@ run-mobile-emulator: build-mobile-emulator
 tools:
 	$(GO_CMD) get golang.org/x/mobile/cmd/gomobile \
 		github.com/sqs/goreturns
+dev:
+	$(GO_CMD) run entrypoint/dev/tetris.go
 
 clear:
 	rm -rf $(BUILD_FOLDER)
