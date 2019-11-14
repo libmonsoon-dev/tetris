@@ -1,6 +1,11 @@
 package game
 
+import (
+	"time"
+)
+
 type Struct struct {
+	ticker  chan struct{}
 	Close   chan struct{}
 	actions chan Action
 	updates chan Snapshot
@@ -9,16 +14,12 @@ type Struct struct {
 }
 
 func New() *Struct {
-	game := &Struct{
+	return &Struct{
 		Close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
 		score:   initScore,
 	}
-
-	go game.processUserInput()
-
-	return game
 }
 
 func (game Struct) Actions() chan<- Action {
@@ -33,13 +34,17 @@ func (game Struct) GetScore() int {
 	return game.score
 }
 
-func (game *Struct) processUserInput() {
+func (game *Struct) Start() {
+	game.initTicker(maxFps)
+
 	for {
 		select {
 		case <-game.Close:
 			return
 		case action := <-game.actions:
 			game.processAction(action)
+		case <-game.ticker:
+			game.processNextStep()
 		}
 	}
 }
@@ -48,16 +53,34 @@ func (game Struct) processAction(action Action) {
 	if !game.validAction(action) {
 		return
 	}
-	game.DoAction(action)
+	game.doAction(action)
+	game.updates <- game.state
 }
 
 func (game Struct) validAction(action Action) bool {
-	//TODO
-	panic("Implement me")
-	return true
+	panic("Implement me") // TODO
 }
 
-func (game *Struct) DoAction(action Action) {
-	//TODO
-	panic("Implement me")
+func (game *Struct) doAction(action Action) {
+	panic("Implement me") // TODO
+}
+
+func (game *Struct) processNextStep() {
+	game.updates <- game.state
+	panic("Implement me") // TODO
+}
+
+func (game *Struct) initTicker(fps int) {
+	game.ticker = make(chan struct{})
+
+	go func() {
+		for {
+			select {
+			case <-game.Close:
+				return
+			case game.ticker <- struct{}{}:
+				time.Sleep(time.Second / time.Duration(fps))
+			}
+		}
+	}()
 }

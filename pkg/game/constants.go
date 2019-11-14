@@ -9,4 +9,6 @@ const (
 	updatesChanCap = 0
 	closeChanLen   = 0
 	closeChanCap   = 0
+
+	maxFps = 60
 )

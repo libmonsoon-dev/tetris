@@ -16,7 +16,6 @@ func main() {
 	defer termbox.Close()
 
 	tetris := game.New()
-	defer close(tetris.Close)
 
 	go func() {
 		userInput := tetris.Actions()
@@ -53,7 +52,8 @@ func main() {
 		}
 	}()
 
-	<-tetris.Close
+	tetris.Start()
+
 	fmt.Println("Score: ", tetris.GetScore())
 
 }
