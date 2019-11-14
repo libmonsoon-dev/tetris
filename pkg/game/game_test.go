@@ -13,7 +13,6 @@ func init() {
 
 func TestNew(t *testing.T) {
 	game := New()
-	defer close(game.Close)
 
 	if game.actions == nil {
 		t.Error("game.actions == nil")
@@ -59,7 +58,6 @@ func TestNew(t *testing.T) {
 
 func TestActions(t *testing.T) {
 	game := New()
-	defer close(game.Close)
 	want := game.actions
 
 	if got := game.Actions(); got != want {
@@ -69,7 +67,6 @@ func TestActions(t *testing.T) {
 
 func TestUpdates(t *testing.T) {
 	game := New()
-	defer close(game.Close)
 	want := game.updates
 
 	if got := game.Updates(); got != want {
@@ -79,7 +76,6 @@ func TestUpdates(t *testing.T) {
 
 func TestGetScore(t *testing.T) {
 	game := New()
-	defer close(game.Close)
 	game.score = rand.Intn(math.MaxInt32)
 
 	want := game.score
