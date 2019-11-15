@@ -43,9 +43,11 @@ tools:
 	$(GO_CMD) get golang.org/x/mobile/cmd/gomobile \
 		github.com/sqs/goreturns \
 		github.com/cheekybits/genny \
+		github.com/urfave/cli@v1.21.0 \
+		github.com/codegangsta/gin \
 
-dev:
-	$(GO_CMD) run entrypoint/dev/tetris.go
+dev tools pre-build:
+	gin -i --build entrypoint/dev --bin build/dev run tetris.go
 
 clear:
 	rm -rf $(BUILD_FOLDER)
