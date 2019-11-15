@@ -34,8 +34,11 @@ func (game Struct) GetScore() int {
 	return game.score
 }
 
-func (game *Struct) Start() {
-	game.initTicker(maxFps)
+func (game *Struct) Init() {
+	game.initTicker()
+}
+
+func (game *Struct) MainLoop() {
 
 	for {
 		select {
@@ -70,16 +73,18 @@ func (game *Struct) processNextStep() {
 	panic("Implement me") // TODO
 }
 
-func (game *Struct) initTicker(fps int) {
+func (game *Struct) initTicker() {
 	game.ticker = make(chan struct{})
 
 	go func() {
+		const waitInterval = initWaitInterval
+
 		for {
 			select {
 			case <-game.Close:
 				return
 			case game.ticker <- struct{}{}:
-				time.Sleep(time.Second / time.Duration(fps))
+				time.Sleep(waitInterval)
 			}
 		}
 	}()

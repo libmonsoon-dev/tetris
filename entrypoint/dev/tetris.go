@@ -52,7 +52,8 @@ func main() {
 		}
 	}()
 
-	tetris.Start()
+	tetris.Init()
+	tetris.MainLoop()
 
 	fmt.Println("Score: ", tetris.GetScore())
 

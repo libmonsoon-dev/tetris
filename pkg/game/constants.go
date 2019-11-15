@@ -1,5 +1,7 @@
 package game
 
+import "time"
+
 const (
 	initScore = 0
 
@@ -10,5 +12,5 @@ const (
 	closeChanLen   = 0
 	closeChanCap   = 0
 
-	maxFps = 60
+	initWaitInterval = time.Microsecond * 200
 )
