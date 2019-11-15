@@ -5,7 +5,7 @@ GO_MOBILE_CMD=gomobile
 PROJECT_NAME := $(shell basename "$(PWD)")
 VERSION := $(shell git describe --tags)
 BUILD := $(shell git rev-parse --short HEAD)
-LD_FLAGS=-ldflags "-X=main.Version=$(VERSION) -X=main.Build=$(BUILD)"
+LD_FLAGS=-ldflags "-X=main.Version=$(VERSION) -X=main.Build=$(BUILD) -X=main.BuildTimestamp=$(shell date -u "+%Y-%m-%d %H:%M:%S")"
 BUILD_FOLDER = build
 MOBILE_EMULATOR_BIN = $(BUILD_FOLDER)/$(PROJECT_NAME)-desktop
 # MAKEFLAGS += --silent
