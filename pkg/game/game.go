@@ -50,14 +50,14 @@ func (game *Struct) Start() {
 }
 
 func (game Struct) processAction(action Action) {
-	if !game.validAction(action) {
+	if !game.isValidAction(action) {
 		return
 	}
 	game.doAction(action)
 	game.updates <- game.state
 }
 
-func (game Struct) validAction(action Action) bool {
+func (game Struct) isValidAction(action Action) bool {
 	panic("Implement me") // TODO
 }
 
