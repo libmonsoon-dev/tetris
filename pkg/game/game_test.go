@@ -1,7 +1,6 @@
 package game
 
 import (
-	"math"
 	"math/rand"
 	"testing"
 	"time"
@@ -22,8 +21,8 @@ func TestNew(t *testing.T) {
 		t.Error("game.updates == nil")
 	}
 
-	if game.Close == nil {
-		t.Error("game.Close == nil")
+	if game.close == nil {
+		t.Error("game.close == nil")
 	}
 
 	if val := len(game.actions); val != actionsChanLen {
@@ -34,8 +33,8 @@ func TestNew(t *testing.T) {
 		t.Errorf("len(game.updates) == %v", val)
 	}
 
-	if val := len(game.Close); val != closeChanLen {
-		t.Errorf("len(game.Close) == %v", val)
+	if val := len(game.close); val != closeChanLen {
+		t.Errorf("len(game.close) == %v", val)
 	}
 
 	if val := cap(game.actions); val != actionsChanCap {
@@ -46,12 +45,8 @@ func TestNew(t *testing.T) {
 		t.Errorf("cap(game.updates) == %v", val)
 	}
 
-	if val := cap(game.Close); val != closeChanCap {
-		t.Errorf("cap(game.Close) == %v", val)
-	}
-
-	if game.score != initScore {
-		t.Errorf("game.score = %v", game.score)
+	if val := cap(game.close); val != closeChanCap {
+		t.Errorf("cap(game.close) == %v", val)
 	}
 
 }
@@ -71,15 +66,5 @@ func TestUpdates(t *testing.T) {
 
 	if got := game.Updates(); got != want {
 		t.Errorf("game.Updates() = %v, want %v", got, want)
-	}
-}
-
-func TestGetScore(t *testing.T) {
-	game := New()
-	game.score = rand.Intn(math.MaxInt32)
-
-	want := game.score
-	if got := game.GetScore(); got != want {
-		t.Errorf("GetScore() = %v, want %v", got, want)
 	}
 }

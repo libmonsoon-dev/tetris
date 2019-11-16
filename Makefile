@@ -47,7 +47,7 @@ tools:
 		github.com/codegangsta/gin \
 
 dev tools pre-build:
-	gin -i --build entrypoint/dev --bin build/dev run tetris.go
+	gin -i --build entrypoint/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
 
 clear:
 	rm -rf $(BUILD_FOLDER)

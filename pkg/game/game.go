@@ -6,19 +6,17 @@ import (
 
 type Struct struct {
 	ticker  chan struct{}
-	Close   chan struct{}
+	close   chan struct{}
 	actions chan Action
 	updates chan Snapshot
-	score   int
 	state   Snapshot
 }
 
 func New() *Struct {
 	return &Struct{
-		Close:   make(chan struct{}, closeChanCap),
+		close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
-		score:   initScore,
 	}
 }
 
@@ -30,10 +28,6 @@ func (game Struct) Updates() <-chan Snapshot {
 	return game.updates
 }
 
-func (game Struct) GetScore() int {
-	return game.score
-}
-
 func (game *Struct) Init() {
 	game.initTicker()
 }
@@ -42,7 +36,7 @@ func (game *Struct) MainLoop() {
 
 	for {
 		select {
-		case <-game.Close:
+		case <-game.close:
 			return
 		case action := <-game.actions:
 			game.processAction(action)
@@ -61,16 +55,14 @@ func (game Struct) processAction(action Action) {
 }
 
 func (game Struct) isValidAction(action Action) bool {
-	panic("Implement me") // TODO
+	return true
 }
 
 func (game *Struct) doAction(action Action) {
-	panic("Implement me") // TODO
 }
 
 func (game *Struct) processNextStep() {
 	game.updates <- game.state
-	panic("Implement me") // TODO
 }
 
 func (game *Struct) initTicker() {
@@ -81,11 +73,19 @@ func (game *Struct) initTicker() {
 
 		for {
 			select {
-			case <-game.Close:
+			case <-game.close:
 				return
 			case game.ticker <- struct{}{}:
 				time.Sleep(waitInterval)
 			}
 		}
 	}()
+}
+
+func (game Struct) Wait() <-chan struct{} {
+	return game.close
+}
+
+func (game Struct) Close() {
+	close(game.close)
 }

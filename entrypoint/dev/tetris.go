@@ -1,7 +1,13 @@
+// +build dev
+
 package main
 
 import (
-	"fmt"
+	"math/rand"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"tetris/pkg/game"
 
 	"github.com/nsf/termbox-go"
@@ -9,13 +15,17 @@ import (
 
 func main() {
 
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
 	}
 	defer termbox.Close()
 
-	tetris := game.New()
+	tetris := game.DevRestore()
+	defer tetris.DevDump()
 
 	go func() {
 		userInput := tetris.Actions()
@@ -25,7 +35,7 @@ func main() {
 
 			switch event.Key {
 			case termbox.KeyEsc:
-				close(tetris.Close)
+				tetris.Close()
 			case termbox.KeySpace:
 				userInput <- game.ActionPause
 			case termbox.KeyArrowUp:
@@ -44,17 +54,30 @@ func main() {
 
 	go func() {
 		for state := range tetris.Updates() {
-			err = termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-			fmt.Println(state)
-			if err != nil {
-				fmt.Println(err)
+			w, h := termbox.Size()
+			if err := termbox.Clear(termbox.ColorDefault, termbox.ColorDefault); err != nil {
+				panic(err)
 			}
+
+			for y := 0; y < h; y++ {
+				for x := 0; x < w; x++ {
+					termbox.SetCell(x, y, ' ', termbox.ColorDefault,
+						termbox.Attribute(rand.Int()%8)+1)
+				}
+			}
+			if err := termbox.Flush(); err != nil {
+				panic(err)
+			}
+			_ = state
 		}
 	}()
 
 	tetris.Init()
-	tetris.MainLoop()
+	go tetris.MainLoop()
 
-	fmt.Println("Score: ", tetris.GetScore())
+	select {
+	case <-tetris.Wait():
+	case <-signals:
+	}
 
 }

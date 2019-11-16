@@ -3,8 +3,6 @@ package game
 import "time"
 
 const (
-	initScore = 0
-
 	actionsChanLen = 0
 	actionsChanCap = 0
 	updatesChanLen = 0
@@ -12,5 +10,5 @@ const (
 	closeChanLen   = 0
 	closeChanCap   = 0
 
-	initWaitInterval = time.Microsecond * 200
+	initWaitInterval = time.Millisecond * 1000
 )
