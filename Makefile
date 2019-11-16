@@ -46,7 +46,7 @@ tools:
 		github.com/urfave/cli@v1.21.0 \
 		github.com/codegangsta/gin \
 
-dev tools pre-build:
+dev: tools pre-build
 	gin -i --build entrypoint/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
 
 clear:
