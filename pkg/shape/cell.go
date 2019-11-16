@@ -1,6 +1,8 @@
 package shape
 
-const o Cell = false
-const x Cell = true
+var o = Cell{false}
+var x = Cell{true}
 
-type Cell bool
+type Cell struct {
+	Filled bool
+}
