@@ -49,5 +49,9 @@ tools:
 dev: tools pre-build
 	gin -i --build entrypoint/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
 
+coverage:
+	go test -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+
 clear:
 	rm -rf $(BUILD_FOLDER)
