@@ -33,7 +33,7 @@ func (app app) init() {
 			action := app.ui.PoolAction()
 
 			if action == game.ActionExit {
-				app.Close()
+				app.game.Exit()
 				return
 			} else {
 				actions <- action

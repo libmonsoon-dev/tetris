@@ -86,6 +86,6 @@ func (game Struct) Wait() <-chan struct{} {
 	return game.close
 }
 
-func (game Struct) Close() {
+func (game Struct) Exit() {
 	close(game.close)
 }
