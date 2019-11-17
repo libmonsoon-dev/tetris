@@ -85,7 +85,7 @@ func (io *IO) renderField(fields game.Field) {
 			cell := fields[y][x]
 
 			if cell.Filled {
-				io.setCell(x+xShift, y+yShift, io.getColor(cell))
+				io.setCell(x+xShift, y+yShift, io.getColor(cell.Color))
 			} else {
 				io.setCell(x+xShift, y+yShift, emptyCellColor)
 			}
@@ -100,8 +100,8 @@ func (io *IO) setCell(x, y int, bg termbox.Attribute) {
 	termbox.SetCell(x*2+1, y, ch, termbox.ColorDefault, bg)
 }
 
-func (io *IO) getColor(cell game.Cell) termbox.Attribute {
-	switch cell.Color {
+func (IO) getColor(color game.Color) termbox.Attribute {
+	switch color {
 	case game.ColorBlack:
 		return termbox.ColorBlack
 	case game.ColorRed:
@@ -128,6 +128,18 @@ func (io *IO) renderScore(i int) {
 }
 
 func (io *IO) renderNextShape(shape game.Shape) {
+	const xShift = 20
+	const yShift = 5
+
+	state := shape.GetCurrentState()
+
+	for y := range state {
+		for x := range state[y] {
+			if state[y][x].Filled {
+				io.setCell(x+xShift, y+yShift, io.getColor(shape.Color))
+			}
+		}
+	}
 
 }
 
