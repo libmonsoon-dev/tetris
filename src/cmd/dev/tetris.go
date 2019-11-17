@@ -17,12 +17,14 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
+	logicComponent := game.DevRestore()
+	defer logicComponent.DevDump()
+
 	tetris := app.Init(
 		&console.UI{},
-		game.DevRestore(),
+		logicComponent,
 	)
 	defer tetris.Close()
-	// defer tetris.DevDump()
 
 	go tetris.MainLoop()
 
