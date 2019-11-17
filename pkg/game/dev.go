@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 const (
@@ -50,10 +51,11 @@ func DevRestore() (game *Struct) {
 		return
 	}
 
+	game.state = tmp.state
 	return
 }
 
-func (game Struct) UnmarshalJSON(blob []byte) error {
+func (game *Struct) UnmarshalJSON(blob []byte) error {
 	dto := &jsonDto{}
 	err := json.Unmarshal(blob, dto)
 	if err != nil {
@@ -68,5 +70,5 @@ func (game Struct) UnmarshalJSON(blob []byte) error {
 func (game Struct) MarshalJSON() ([]byte, error) {
 	dto := jsonDto{State: game.state}
 
-	return json.MarshalIndent(dto, "", "    ")
+	return json.MarshalIndent(dto, "", strings.Repeat(" ", 4))
 }
