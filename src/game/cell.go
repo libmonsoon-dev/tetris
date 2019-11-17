@@ -1,6 +1,6 @@
 package game
 
-import "tetris/pkg/shape"
+import "tetris/src/shape"
 
 type Cell struct {
 	shape.Cell

@@ -46,8 +46,8 @@ tools:
 		github.com/urfave/cli@v1.21.0 \
 		github.com/codegangsta/gin \
 
-dev: tools pre-build
-	gin -i --build entrypoint/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
+dev: pre-build
+	gin -i --build src/cmd/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
 
 coverage:
 	go test -coverprofile=coverage.out ./...

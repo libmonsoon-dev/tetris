@@ -3,7 +3,9 @@ package game
 type Action int
 
 const (
-	ActionPause Action = iota
+	_ Action = iota
+	ActionExit
+	ActionPause
 	ActionUp
 	ActionDown
 	ActionLeft
