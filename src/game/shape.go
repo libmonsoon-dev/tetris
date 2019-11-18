@@ -8,6 +8,17 @@ type Shape struct {
 	Color
 }
 
+func RandomShape() Shape {
+	sh, index := shape.ChoiceRandom()
+
+	return Shape{
+		Shape: sh,
+		Index: index,
+		Color: RandomColor(),
+	}
+
+}
+
 func (sh Shape) GetCurrentState() shape.State {
 	return sh.Shape[sh.Index]
 }

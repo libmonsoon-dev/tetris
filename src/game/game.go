@@ -17,6 +17,11 @@ func New() *Struct {
 		close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
+		state: Snapshot{
+			Field: Field{},
+			Score: 0,
+			Next:  RandomShape(),
+		},
 	}
 }
 

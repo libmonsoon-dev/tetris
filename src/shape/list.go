@@ -1,9 +1,11 @@
 package shape
 
-type list []Shape
+import "math/rand"
 
-func (l list) ChoiceRandom() Shape {
-	return choiceRandomShape(l)
+func ChoiceRandom() (Shape, int) {
+	shape := choiceRandomShape(List[:])
+
+	return shape, rand.Intn(len(shape))
 }
 
-var List = list{S, Z, I, O, J, L, T}
+var List = [...]Shape{S, Z, I, O, J, L, T}
