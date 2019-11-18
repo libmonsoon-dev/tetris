@@ -34,6 +34,12 @@ func (game Struct) DevDump() {
 }
 
 func DevRestore() (game *Struct) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 	game = New()
 
 	blob, err := ioutil.ReadFile(fileName)
