@@ -40,16 +40,17 @@ run-mobile-emulator: build-mobile-emulator
 	$(MOBILE_EMULATOR_BIN)
 
 tools:
+	#TODO: specify version
 	$(GO_CMD) get golang.org/x/mobile/cmd/gomobile \
 		github.com/sqs/goreturns \
 		github.com/cheekybits/genny \
 		github.com/urfave/cli@v1.21.0 \
 		github.com/codegangsta/gin \
 
-dev: pre-build
+dev: pre-build tools
 	gin -i --build src/cmd/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go
 
-coverage:
+coverage: pre-build
 	go test -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
 
