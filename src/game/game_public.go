@@ -1,15 +1,12 @@
 package game
 
-import (
-	"time"
-)
-
 type Struct struct {
-	ticker  chan struct{}
-	close   chan struct{}
-	actions chan Action
-	updates chan Snapshot
-	state   Snapshot
+	ticker        chan struct{}
+	close         chan struct{}
+	actions       chan Action
+	updates       chan Snapshot
+	state         Snapshot
+	fallingFigure *fallingFigure
 }
 
 func New() *Struct {
@@ -49,42 +46,6 @@ func (game *Struct) MainLoop() {
 			game.processNextStep()
 		}
 	}
-}
-
-func (game Struct) processAction(action Action) {
-	if !game.isValidAction(action) {
-		return
-	}
-	game.doAction(action)
-	game.updates <- game.state
-}
-
-func (game Struct) isValidAction(action Action) bool {
-	return true
-}
-
-func (game *Struct) doAction(action Action) {
-}
-
-func (game *Struct) processNextStep() {
-	game.updates <- game.state
-}
-
-func (game *Struct) initTicker() {
-	game.ticker = make(chan struct{})
-
-	go func() {
-		const waitInterval = initWaitInterval
-
-		for {
-			select {
-			case <-game.close:
-				return
-			case game.ticker <- struct{}{}:
-				time.Sleep(waitInterval)
-			}
-		}
-	}()
 }
 
 func (game Struct) Wait() <-chan struct{} {

@@ -1,14 +1,8 @@
 package game
 
 import (
-	"math/rand"
 	"testing"
-	"time"
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 func TestNew(t *testing.T) {
 	game := New()
