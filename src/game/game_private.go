@@ -26,10 +26,15 @@ func (game *Struct) processNextStep() {
 	if game.fallingFigure == nil {
 		game.newFallingFigure()
 	}
-	game.state.Field.Remove(*game.fallingFigure)
+	game.state.Remove(*game.fallingFigure)
 	game.fallingFigure.point.Y++
-	game.state.Field.Set(*game.fallingFigure)
-
+	if game.state.IsAtBottom(*game.fallingFigure) {
+		game.fallingFigure.point.Y--
+		game.state.Set(*game.fallingFigure)
+		game.fallingFigure = nil
+	} else {
+		game.state.Set(*game.fallingFigure)
+	}
 	game.updates <- game.state
 }
 

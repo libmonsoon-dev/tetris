@@ -14,6 +14,9 @@ type Field [FieldHeight][FieldWith]Cell
 func (fields *Field) Set(figure fallingFigure) {
 	state := figure.GetCurrentState()
 	for point := range fields.indexGenerator(state, figure.point) {
+		if !inBounds(point) {
+			continue
+		}
 
 		fields[point.Y][point.X] = Cell{
 			Cell:  shape.Cell{Filled: true},
@@ -25,12 +28,41 @@ func (fields *Field) Set(figure fallingFigure) {
 func (fields *Field) Remove(figure fallingFigure) {
 	state := figure.GetCurrentState()
 	for point := range fields.indexGenerator(state, figure.point) {
+		if !inBounds(point) {
+			continue
+		}
 
 		fields[point.Y][point.X] = Cell{}
 	}
 }
 
-func (fields *Field) indexGenerator(shapeState shape.State, shift point) <-chan point {
+func (fields *Field) IsAtBottom(figure fallingFigure) bool {
+	state := figure.GetCurrentState()
+	for point := range fields.indexGenerator(state, figure.point) {
+		if isAbove(point) {
+			continue
+		}
+
+		if isBelow(point) || fields[point.Y][point.X].Filled {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (fields *Field) CanBeSet(figure fallingFigure) bool {
+	state := figure.GetCurrentState()
+	for point := range fields.indexGenerator(state, figure.point) {
+		if !inBounds(point) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (Field) indexGenerator(shapeState shape.State, shift point) <-chan point {
 	ch := make(chan point)
 
 	go func() {
@@ -40,16 +72,10 @@ func (fields *Field) indexGenerator(shapeState shape.State, shift point) <-chan 
 					continue
 				}
 
-				point := point{
+				ch <- point{
 					X: x + shift.X,
 					Y: y + shift.Y,
 				}
-
-				if !fields.inBounds(point) {
-					continue
-				}
-
-				ch <- point
 			}
 		}
 		close(ch)
@@ -58,6 +84,14 @@ func (fields *Field) indexGenerator(shapeState shape.State, shift point) <-chan 
 	return ch
 }
 
-func (Field) inBounds(index point) bool {
-	return index.Y >= 0 && index.Y < FieldHeight && index.X >= 0 && index.X < FieldWith
+func isAbove(index point) bool {
+	return index.Y < 0
+}
+
+func isBelow(index point) bool {
+	return index.Y >= FieldHeight
+}
+
+func inBounds(index point) bool {
+	return !isAbove(index) && !isBelow(index) && index.X >= 0 && index.X < FieldWith
 }
