@@ -10,5 +10,6 @@ const (
 	closeChanLen   = 0
 	closeChanCap   = 0
 
-	initWaitInterval = time.Millisecond * 1000
+	initWaitInterval  = time.Millisecond * 1000
+	pauseWaitInterval = time.Microsecond * 10
 )

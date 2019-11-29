@@ -54,6 +54,7 @@ func (game *Struct) initTicker() {
 
 	go func() {
 		const waitInterval = initWaitInterval
+		onPause := false
 
 		for {
 			select {
@@ -61,6 +62,16 @@ func (game *Struct) initTicker() {
 				return
 			case game.ticker <- struct{}{}:
 				time.Sleep(waitInterval)
+
+			case onPause = <-game.pause:
+				for onPause {
+					select {
+					case <-game.close:
+						return
+					case onPause = <-game.pause:
+						//continue
+					}
+				}
 			}
 		}
 	}()
