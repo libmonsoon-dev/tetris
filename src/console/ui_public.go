@@ -24,12 +24,19 @@ func (ui UI) Close() {
 }
 
 func (ui *UI) Render(snapshot game.Snapshot) error {
-	ui.clear()
+	if err := ui.clear(); err != nil {
+		return err
+	}
+
 	ui.renderBox()
 	ui.renderLogo()
 	ui.renderField(snapshot.Field)
 	ui.renderScore(snapshot.Score)
 	ui.renderNextShape(snapshot.Next)
+	if snapshot.OnPause {
+		ui.renderPauseBar()
+	}
+
 	return ui.flush()
 }
 

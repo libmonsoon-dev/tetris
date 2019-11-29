@@ -64,11 +64,28 @@ func (ui *UI) renderNextShape(shape game.Shape) {
 
 }
 
+func (ui *UI) renderPauseBar() {
+	const xShift = 17
+	const yShift = 15
+
+	const textFg = termbox.ColorRed
+	const textBg = termbox.ColorCyan
+	const text = "ON PAUSE"
+
+	ui.setString(xShift, yShift, textFg, textBg, text)
+}
+
 func (ui *UI) setCell(x, y int, bg termbox.Attribute) {
 	const ch = ' '
 
 	termbox.SetCell(x*2, y, ch, termbox.ColorDefault, bg)
 	termbox.SetCell(x*2+1, y, ch, termbox.ColorDefault, bg)
+}
+
+func (ui *UI) setString(x, y int, fg, bg termbox.Attribute, s string) {
+	for i, ch := range []rune(s) {
+		termbox.SetCell(x+i, y, ch, fg, bg)
+	}
 }
 
 func (UI) getColor(color game.Color) termbox.Attribute {

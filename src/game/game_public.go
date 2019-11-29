@@ -5,7 +5,7 @@ type Struct struct {
 	close         chan struct{}
 	actions       chan Action
 	updates       chan Snapshot
-	pause         chan bool
+	pause         chan struct{}
 	state         Snapshot
 	fallingFigure *fallingFigure
 }
@@ -15,7 +15,7 @@ func New() *Struct {
 		close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
-		pause:   make(chan bool),
+		pause:   make(chan struct{}),
 		state: Snapshot{
 			Field: Field{},
 			Score: 0,
@@ -47,6 +47,7 @@ func (game *Struct) MainLoop() {
 		case <-game.ticker:
 			game.processNextStep()
 		}
+		game.updateState()
 	}
 }
 

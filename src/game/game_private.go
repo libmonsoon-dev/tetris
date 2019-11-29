@@ -12,7 +12,6 @@ func (game Struct) processAction(action Action) {
 		return
 	}
 	game.doAction(action)
-	game.updates <- game.state
 }
 
 func (Struct) isValidAction(action Action) bool {
@@ -20,6 +19,10 @@ func (Struct) isValidAction(action Action) bool {
 }
 
 func (game *Struct) doAction(action Action) {
+	switch action {
+	case ActionPause:
+		game.pauseSwitch()
+	}
 }
 
 func (game *Struct) processNextStep() {
@@ -35,7 +38,6 @@ func (game *Struct) processNextStep() {
 	} else {
 		game.state.Set(*game.fallingFigure)
 	}
-	game.updates <- game.state
 }
 
 func (game *Struct) newFallingFigure() {
@@ -49,12 +51,19 @@ func (game *Struct) newFallingFigure() {
 	game.state.Next = RandomShape()
 }
 
+func (game Struct) pauseSwitch() {
+	game.pause <- struct{}{}
+}
+
+func (game Struct) updateState() {
+	game.updates <- game.state
+}
+
 func (game *Struct) initTicker() {
 	game.ticker = make(chan struct{})
 
 	go func() {
 		const waitInterval = initWaitInterval
-		onPause := false
 
 		for {
 			select {
@@ -63,13 +72,14 @@ func (game *Struct) initTicker() {
 			case game.ticker <- struct{}{}:
 				time.Sleep(waitInterval)
 
-			case onPause = <-game.pause:
-				for onPause {
+			case <-game.pause:
+				game.state.OnPause = !game.state.OnPause
+				for game.state.OnPause {
 					select {
 					case <-game.close:
 						return
-					case onPause = <-game.pause:
-						//continue
+					case <-game.pause:
+						game.state.OnPause = !game.state.OnPause
 					}
 				}
 			}
