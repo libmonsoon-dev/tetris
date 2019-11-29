@@ -7,7 +7,7 @@ const (
 	fallingFigureYShift = -5
 )
 
-func (game Struct) processAction(action Action) {
+func (game *Struct) processAction(action Action) {
 	if !game.isValidAction(action) {
 		return
 	}
@@ -51,7 +51,8 @@ func (game *Struct) newFallingFigure() {
 	game.state.Next = RandomShape()
 }
 
-func (game Struct) pauseSwitch() {
+func (game *Struct) pauseSwitch() {
+	game.state.OnPause = !game.state.OnPause
 	game.pause <- struct{}{}
 }
 
@@ -73,14 +74,11 @@ func (game *Struct) initTicker() {
 				time.Sleep(waitInterval)
 
 			case <-game.pause:
-				game.state.OnPause = !game.state.OnPause
-				for game.state.OnPause {
-					select {
-					case <-game.close:
-						return
-					case <-game.pause:
-						game.state.OnPause = !game.state.OnPause
-					}
+				select {
+				case <-game.close:
+					return
+				case <-game.pause:
+					//pass
 				}
 			}
 		}
