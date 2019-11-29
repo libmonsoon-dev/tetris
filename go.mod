@@ -11,7 +11,7 @@ require (
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/urfave/cli v1.21.0 // indirect
 	golang.org/x/crypto v0.0.0-20191029031824-8986dd9e96cf // indirect
-	golang.org/x/mobile v0.0.0-20191115022231-f0c40035f2ba
+	golang.org/x/mobile v0.0.0-20191123054942-d9e324ca8c38
 	golang.org/x/net v0.0.0-20191028085509-fe3aa8a45271 // indirect
 	golang.org/x/tools v0.0.0-20191105231337-689d0f08e67a // indirect
 	gopkg.in/urfave/cli.v1 v1.20.0 // indirect

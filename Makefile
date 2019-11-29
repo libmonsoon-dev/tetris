@@ -41,10 +41,9 @@ run-mobile-emulator: build-mobile-emulator
 
 tools:
 	#TODO: specify version
-	$(GO_CMD) get golang.org/x/mobile/cmd/gomobile \
+	$(GO_CMD) install golang.org/x/mobile/cmd/gomobile \
 		github.com/sqs/goreturns \
 		github.com/cheekybits/genny \
-		github.com/urfave/cli@v1.21.0 \
 		github.com/codegangsta/gin \
 
 dev: pre-build tools
