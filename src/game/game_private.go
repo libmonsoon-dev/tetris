@@ -36,6 +36,7 @@ func (game *Struct) validateRotation() bool {
 	nextState := game.fallingFigure.Copy()
 	nextState.Rotate()
 
+	//TODO: refactor it
 	return game.state.Field.CanBeSet(nextState)
 }
 
@@ -43,6 +44,7 @@ func (game *Struct) validateMove(distance int) bool {
 	nextState := game.fallingFigure.Copy()
 	nextState.X += distance
 
+	//TODO: refactor it
 	return game.state.Field.CanBeSet(nextState)
 }
 
@@ -70,10 +72,18 @@ func (game *Struct) processNextStep() {
 	if game.state.IsAtBottom(game.fallingFigure) {
 		game.fallingFigure.point.Y--
 		game.state.Set(game.fallingFigure)
+		game.checkGameOver()
+		game.clearLines()
 		game.newFallingFigure()
 	}
 	game.state.Set(game.fallingFigure)
 }
+
+//TODO:
+func (game *Struct) checkGameOver() {}
+
+//TODO:
+func (game *Struct) clearLines() {}
 
 func (game *Struct) newFallingFigure() {
 	game.fallingFigure = fallingFigure{
