@@ -14,34 +14,69 @@ func (game *Struct) processAction(action Action) {
 	game.doAction(action)
 }
 
-func (Struct) isValidAction(action Action) bool {
-	return true
+func (game Struct) isValidAction(action Action) bool {
+	switch action {
+	case ActionUp:
+		return game.validateRotation()
+	case ActionRight:
+		return game.validateMove(1)
+	case ActionLeft:
+		return game.validateMove(-1)
+
+	default:
+		return true
+
+	}
+}
+
+func (game *Struct) validateRotation() bool {
+	game.state.Remove(game.fallingFigure)
+	defer game.state.Set(game.fallingFigure)
+
+	nextState := game.fallingFigure.Copy()
+	nextState.Rotate()
+
+	return game.state.Field.CanBeSet(nextState)
+}
+
+func (game *Struct) validateMove(distance int) bool {
+	nextState := game.fallingFigure.Copy()
+	nextState.X += distance
+
+	return game.state.Field.CanBeSet(nextState)
 }
 
 func (game *Struct) doAction(action Action) {
+	game.state.Remove(game.fallingFigure)
+
 	switch action {
 	case ActionPause:
 		game.pauseSwitch()
+	case ActionUp:
+		game.fallingFigure.Rotate()
+	case ActionRight:
+		game.fallingFigure.Move(1)
+	case ActionLeft:
+		game.fallingFigure.Move(-1)
 	}
+
+	game.state.Set(game.fallingFigure)
 }
 
 func (game *Struct) processNextStep() {
-	if game.fallingFigure == nil {
+	game.state.Remove(game.fallingFigure)
+
+	game.fallingFigure.point.Y++
+	if game.state.IsAtBottom(game.fallingFigure) {
+		game.fallingFigure.point.Y--
+		game.state.Set(game.fallingFigure)
 		game.newFallingFigure()
 	}
-	game.state.Remove(*game.fallingFigure)
-	game.fallingFigure.point.Y++
-	if game.state.IsAtBottom(*game.fallingFigure) {
-		game.fallingFigure.point.Y--
-		game.state.Set(*game.fallingFigure)
-		game.fallingFigure = nil
-	} else {
-		game.state.Set(*game.fallingFigure)
-	}
+	game.state.Set(game.fallingFigure)
 }
 
 func (game *Struct) newFallingFigure() {
-	game.fallingFigure = &fallingFigure{
+	game.fallingFigure = fallingFigure{
 		Shape: game.state.Next,
 		point: point{
 			X: fallingFigureXShift,

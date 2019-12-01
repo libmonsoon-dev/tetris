@@ -23,7 +23,15 @@ func (sh Shape) GetCurrentState() shape.State {
 	return sh.Shape[sh.Index]
 }
 
-func (sh *Shape) NextState() {
-	sh.Index++
-	sh.Index %= len(sh.Shape)
+func (sh Shape) Copy() Shape {
+	return sh
+}
+
+func (sh *Shape) Rotate() {
+	sh.Index = sh.getNextIndex()
+}
+
+func (sh Shape) getNextIndex() int {
+	index := sh.Index
+	return (index + 1) % len(sh.Shape)
 }

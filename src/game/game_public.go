@@ -7,11 +7,11 @@ type Struct struct {
 	updates       chan Snapshot
 	pause         chan struct{}
 	state         Snapshot
-	fallingFigure *fallingFigure
+	fallingFigure fallingFigure
 }
 
 func New() *Struct {
-	return &Struct{
+	game := &Struct{
 		close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
@@ -22,6 +22,9 @@ func New() *Struct {
 			Next:  RandomShape(),
 		},
 	}
+	game.newFallingFigure()
+
+	return game
 }
 
 func (game Struct) Actions() chan<- Action {
