@@ -5,6 +5,7 @@ require (
 	github.com/cheekybits/genny v1.0.0
 	github.com/codegangsta/envy v0.0.0-20141216192214-4b78388c8ce4 // indirect
 	github.com/codegangsta/gin v0.0.0-20171026143024-cafe2ce98974 // indirect
+	github.com/fatih/errwrap v1.0.0 // indirect
 	github.com/mattn/go-runewidth v0.0.6 // indirect
 	github.com/mattn/go-shellwords v1.0.6 // indirect
 	github.com/nsf/termbox-go v0.0.0-20190817171036-93860e161317

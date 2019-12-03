@@ -45,6 +45,7 @@ tools:
 		github.com/sqs/goreturns \
 		github.com/cheekybits/genny \
 		github.com/codegangsta/gin \
+		github.com/fatih/errwrap/cmd/errwrap \
 
 dev: pre-build tools
 	gin -i --build src/cmd/dev --bin build/dev  --buildArgs="-tags dev" run tetris.go

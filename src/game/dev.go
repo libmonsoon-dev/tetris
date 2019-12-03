@@ -45,7 +45,7 @@ func DevRestore() (game *Struct) {
 	blob, err := ioutil.ReadFile(fileName)
 
 	if err != nil {
-		fmt.Println(fmt.Errorf("game.DevRestore: ioutil.ReadFile(%v): %v", fileName, err))
+		fmt.Println(fmt.Errorf("game.DevRestore: ioutil.ReadFile(%v): %w", fileName, err))
 		return
 	}
 
@@ -53,7 +53,7 @@ func DevRestore() (game *Struct) {
 	err = json.Unmarshal(blob, tmp)
 
 	if err != nil {
-		fmt.Println(fmt.Errorf("game.DevRestore: %v", err))
+		fmt.Println(fmt.Errorf("game.DevRestore: %w", err))
 		return
 	}
 
