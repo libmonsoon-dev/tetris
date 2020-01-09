@@ -1,12 +1,45 @@
 package console
 
 import (
-	"github.com/nsf/termbox-go"
-
 	"tetris/src/game"
+
+	"github.com/nsf/termbox-go"
 )
 
-const actionChanSize = 1
+func (ui *UI) updateSize() {
+	ui.width, ui.height = termbox.Size()
+}
+
+func (ui *UI) clear() error {
+	return termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
+}
+
+func (ui *UI) flush() error {
+	return termbox.Flush()
+}
+
+func (UI) getColor(color game.Color) termbox.Attribute {
+	switch color {
+	case game.ColorBlack:
+		return termbox.ColorBlack
+	case game.ColorRed:
+		return termbox.ColorRed
+	case game.ColorGreen:
+		return termbox.ColorGreen
+	case game.ColorYellow:
+		return termbox.ColorYellow
+	case game.ColorBlue:
+		return termbox.ColorBlue
+	case game.ColorMagenta:
+		return termbox.ColorMagenta
+	case game.ColorCyan:
+		return termbox.ColorCyan
+	case game.ColorWhite:
+		return termbox.ColorWhite
+	default:
+		return termbox.ColorDefault
+	}
+}
 
 func (ui *UI) renderLogo() {
 
@@ -88,60 +121,4 @@ func (ui *UI) setString(x, y int, fg, bg termbox.Attribute, s string) {
 	for i, ch := range []rune(s) {
 		termbox.SetCell(x+i, y, ch, fg, bg)
 	}
-}
-
-func (UI) getColor(color game.Color) termbox.Attribute {
-	switch color {
-	case game.ColorBlack:
-		return termbox.ColorBlack
-	case game.ColorRed:
-		return termbox.ColorRed
-	case game.ColorGreen:
-		return termbox.ColorGreen
-	case game.ColorYellow:
-		return termbox.ColorYellow
-	case game.ColorBlue:
-		return termbox.ColorBlue
-	case game.ColorMagenta:
-		return termbox.ColorMagenta
-	case game.ColorCyan:
-		return termbox.ColorCyan
-	case game.ColorWhite:
-		return termbox.ColorWhite
-	default:
-		return termbox.ColorDefault
-	}
-}
-
-func (ui *UI) updateSize() {
-	ui.width, ui.height = termbox.Size()
-}
-
-func (ui UI) poolEventLoop() {
-	for {
-		switch termbox.PollEvent().Key {
-		case termbox.KeyEsc:
-			ui.actions <- game.ActionExit
-		case termbox.KeySpace:
-			ui.actions <- game.ActionPause
-		case termbox.KeyArrowUp:
-			ui.actions <- game.ActionUp
-		case termbox.KeyArrowDown:
-			ui.actions <- game.ActionDown
-		case termbox.KeyEnter:
-			ui.actions <- game.ActionDown
-		case termbox.KeyArrowLeft:
-			ui.actions <- game.ActionLeft
-		case termbox.KeyArrowRight:
-			ui.actions <- game.ActionRight
-		}
-	}
-}
-
-func (ui *UI) clear() error {
-	return termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-}
-
-func (ui *UI) flush() error {
-	return termbox.Flush()
 }

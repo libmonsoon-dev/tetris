@@ -6,10 +6,13 @@ import (
 	"tetris/src/game"
 )
 
+const actionChanSize = 1
+
 type UI struct {
 	width   int
 	height  int
 	actions chan game.Action
+	close   chan struct{}
 }
 
 func (ui *UI) Init() {
@@ -19,10 +22,12 @@ func (ui *UI) Init() {
 	}
 	ui.updateSize()
 	ui.actions = make(chan game.Action, actionChanSize)
+	ui.close = make(chan struct{})
 	go ui.poolEventLoop()
 }
 
 func (ui UI) Close() {
+	close(ui.close)
 	termbox.Close()
 }
 
