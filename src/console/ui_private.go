@@ -6,6 +6,8 @@ import (
 	"tetris/src/game"
 )
 
+const actionChanSize = 1
+
 func (ui *UI) renderLogo() {
 
 }
@@ -113,6 +115,27 @@ func (UI) getColor(color game.Color) termbox.Attribute {
 
 func (ui *UI) updateSize() {
 	ui.width, ui.height = termbox.Size()
+}
+
+func (ui UI) poolEventLoop() {
+	for {
+		switch termbox.PollEvent().Key {
+		case termbox.KeyEsc:
+			ui.actions <- game.ActionExit
+		case termbox.KeySpace:
+			ui.actions <- game.ActionPause
+		case termbox.KeyArrowUp:
+			ui.actions <- game.ActionUp
+		case termbox.KeyArrowDown:
+			ui.actions <- game.ActionDown
+		case termbox.KeyEnter:
+			ui.actions <- game.ActionDown
+		case termbox.KeyArrowLeft:
+			ui.actions <- game.ActionLeft
+		case termbox.KeyArrowRight:
+			ui.actions <- game.ActionRight
+		}
+	}
 }
 
 func (ui *UI) clear() error {

@@ -6,5 +6,5 @@ type UI interface {
 	Init()
 	Close()
 	Render(snapshot game.Snapshot) error
-	PoolAction() game.Action
+	Actions() <-chan game.Action
 }

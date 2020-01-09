@@ -29,9 +29,7 @@ func (app app) init() {
 	go func() {
 		actions := app.game.Actions()
 
-		for {
-			action := app.ui.PoolAction()
-
+		for action := range app.ui.Actions() {
 			if action == game.ActionExit {
 				app.game.Exit()
 				return

@@ -7,8 +7,9 @@ import (
 )
 
 type UI struct {
-	width  int
-	height int
+	width   int
+	height  int
+	actions chan game.Action
 }
 
 func (ui *UI) Init() {
@@ -17,6 +18,8 @@ func (ui *UI) Init() {
 		panic(err)
 	}
 	ui.updateSize()
+	ui.actions = make(chan game.Action, actionChanSize)
+	go ui.poolEventLoop()
 }
 
 func (ui UI) Close() {
@@ -40,23 +43,6 @@ func (ui *UI) Render(snapshot game.Snapshot) error {
 	return ui.flush()
 }
 
-func (ui *UI) PoolAction() game.Action {
-	for {
-		switch termbox.PollEvent().Key {
-		case termbox.KeyEsc:
-			return game.ActionExit
-		case termbox.KeySpace:
-			return game.ActionPause
-		case termbox.KeyArrowUp:
-			return game.ActionUp
-		case termbox.KeyArrowDown:
-			return game.ActionDown
-		case termbox.KeyEnter:
-			return game.ActionDown
-		case termbox.KeyArrowLeft:
-			return game.ActionLeft
-		case termbox.KeyArrowRight:
-			return game.ActionRight
-		}
-	}
+func (ui UI) Actions() <-chan game.Action {
+	return ui.actions
 }
