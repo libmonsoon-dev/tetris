@@ -21,10 +21,11 @@ func main() {
 		logicComponent := game.DevRestore()
 		defer logicComponent.DevDump()
 
-		tetris := app.Init(
+		tetris := app.New(
 			&console.UI{},
 			logicComponent,
 		)
+		tetris.Init()
 		defer tetris.Close()
 
 		go tetris.MainLoop()
