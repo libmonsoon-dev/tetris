@@ -1,6 +1,6 @@
 package game
 
-type Struct struct {
+type Game struct {
 	ticker        chan struct{}
 	close         chan struct{}
 	actions       chan Action
@@ -10,8 +10,8 @@ type Struct struct {
 	fallingFigure fallingFigure
 }
 
-func New() *Struct {
-	game := &Struct{
+func New() *Game {
+	game := &Game{
 		close:   make(chan struct{}, closeChanCap),
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
@@ -27,19 +27,19 @@ func New() *Struct {
 	return game
 }
 
-func (game Struct) Actions() chan<- Action {
+func (game Game) Actions() chan<- Action {
 	return game.actions
 }
 
-func (game Struct) Updates() <-chan Snapshot {
+func (game Game) Updates() <-chan Snapshot {
 	return game.updates
 }
 
-func (game *Struct) Init() {
+func (game *Game) Init() {
 	game.initTicker()
 }
 
-func (game *Struct) MainLoop() {
+func (game *Game) MainLoop() {
 
 	for {
 		select {
@@ -54,10 +54,10 @@ func (game *Struct) MainLoop() {
 	}
 }
 
-func (game Struct) Wait() <-chan struct{} {
+func (game Game) Wait() <-chan struct{} {
 	return game.close
 }
 
-func (game Struct) Exit() {
+func (game Game) Exit() {
 	close(game.close)
 }

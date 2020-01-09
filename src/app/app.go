@@ -6,11 +6,11 @@ import (
 
 type App struct {
 	ui   UI
-	game *game.Struct
+	game *game.Game
 	//TODO: add errorHandler
 }
 
-func New(ui UI, game *game.Struct) App {
+func New(ui UI, game *game.Game) App {
 	return App{ui: ui, game: game}
 }
 

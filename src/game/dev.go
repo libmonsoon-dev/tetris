@@ -25,7 +25,7 @@ func mustNil(e error) {
 
 }
 
-func (game Struct) DevDump() {
+func (game Game) DevDump() {
 	blob, err := json.Marshal(game)
 	mustNil(err)
 
@@ -33,7 +33,7 @@ func (game Struct) DevDump() {
 	mustNil(err)
 }
 
-func DevRestore() (game *Struct) {
+func DevRestore() (game *Game) {
 	defer func() {
 		err := recover()
 		if err != nil {
@@ -49,7 +49,7 @@ func DevRestore() (game *Struct) {
 		return
 	}
 
-	tmp := &Struct{}
+	tmp := &Game{}
 	err = json.Unmarshal(blob, tmp)
 
 	if err != nil {
@@ -61,7 +61,7 @@ func DevRestore() (game *Struct) {
 	return
 }
 
-func (game *Struct) UnmarshalJSON(blob []byte) error {
+func (game *Game) UnmarshalJSON(blob []byte) error {
 	dto := &jsonDto{}
 	err := json.Unmarshal(blob, dto)
 	if err != nil {
@@ -73,7 +73,7 @@ func (game *Struct) UnmarshalJSON(blob []byte) error {
 	return nil
 }
 
-func (game Struct) MarshalJSON() ([]byte, error) {
+func (game Game) MarshalJSON() ([]byte, error) {
 	dto := jsonDto{State: game.state}
 
 	return json.MarshalIndent(dto, "", strings.Repeat(" ", 4))

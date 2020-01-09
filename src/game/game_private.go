@@ -7,14 +7,14 @@ const (
 	fallingFigureYShift = -5
 )
 
-func (game *Struct) processAction(action Action) {
+func (game *Game) processAction(action Action) {
 	if !game.isValidAction(action) {
 		return
 	}
 	game.doAction(action)
 }
 
-func (game Struct) isValidAction(action Action) bool {
+func (game Game) isValidAction(action Action) bool {
 	switch action {
 	case ActionUp:
 		return game.validateRotation()
@@ -29,7 +29,7 @@ func (game Struct) isValidAction(action Action) bool {
 	}
 }
 
-func (game *Struct) validateRotation() bool {
+func (game *Game) validateRotation() bool {
 	game.state.Remove(game.fallingFigure)
 	defer game.state.Set(game.fallingFigure)
 
@@ -40,7 +40,7 @@ func (game *Struct) validateRotation() bool {
 	return game.state.Field.CanBeSet(nextState)
 }
 
-func (game *Struct) validateMove(distance int) bool {
+func (game *Game) validateMove(distance int) bool {
 	nextState := game.fallingFigure.Copy()
 	nextState.X += distance
 
@@ -48,7 +48,7 @@ func (game *Struct) validateMove(distance int) bool {
 	return game.state.Field.CanBeSet(nextState)
 }
 
-func (game *Struct) doAction(action Action) {
+func (game *Game) doAction(action Action) {
 	game.state.Remove(game.fallingFigure)
 
 	switch action {
@@ -65,7 +65,7 @@ func (game *Struct) doAction(action Action) {
 	game.state.Set(game.fallingFigure)
 }
 
-func (game *Struct) processNextStep() {
+func (game *Game) processNextStep() {
 	game.state.Remove(game.fallingFigure)
 
 	game.fallingFigure.point.Y++
@@ -80,12 +80,12 @@ func (game *Struct) processNextStep() {
 }
 
 //TODO:
-func (game *Struct) checkGameOver() {}
+func (game *Game) checkGameOver() {}
 
 //TODO:
-func (game *Struct) clearLines() {}
+func (game *Game) clearLines() {}
 
-func (game *Struct) newFallingFigure() {
+func (game *Game) newFallingFigure() {
 	game.fallingFigure = fallingFigure{
 		Shape: game.state.Next,
 		point: point{
@@ -96,16 +96,16 @@ func (game *Struct) newFallingFigure() {
 	game.state.Next = RandomShape()
 }
 
-func (game *Struct) pauseSwitch() {
+func (game *Game) pauseSwitch() {
 	game.state.OnPause = !game.state.OnPause
 	game.pause <- struct{}{}
 }
 
-func (game Struct) updateState() {
+func (game Game) updateState() {
 	game.updates <- game.state
 }
 
-func (game *Struct) initTicker() {
+func (game *Game) initTicker() {
 	game.ticker = make(chan struct{})
 
 	go func() {
