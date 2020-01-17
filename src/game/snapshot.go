@@ -1,7 +1,7 @@
 package game
 
 type Snapshot struct {
-	Field
+	VisibleField
 	Score   int
 	Next    Shape
 	OnPause bool

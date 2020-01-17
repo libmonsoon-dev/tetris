@@ -38,7 +38,7 @@ func (ui *UI) Render(snapshot game.Snapshot) error {
 
 	ui.renderBox()
 	ui.renderLogo()
-	ui.renderField(snapshot.Field)
+	ui.renderField(snapshot.VisibleField)
 	ui.renderScore(snapshot.Score)
 	ui.renderNextShape(snapshot.Next)
 	if snapshot.OnPause {

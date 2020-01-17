@@ -50,24 +50,24 @@ func (ui *UI) renderBox() {
 	const yShift = 5
 	const color = termbox.ColorWhite
 
-	for i := -1; i < game.FieldHeight+1; i++ {
+	for i := -1; i < game.VisibleFieldHeight+1; i++ {
 		ui.setCell(xShift-1, yShift+i, color)
-		ui.setCell(xShift+game.FieldWith, yShift+i, color)
+		ui.setCell(xShift+game.VisibleFieldWith, yShift+i, color)
 	}
 
-	for i := -1; i < game.FieldWith+1; i++ {
+	for i := -1; i < game.VisibleFieldWith+1; i++ {
 		ui.setCell(xShift+i, yShift-1, color)
-		ui.setCell(xShift+i, yShift+game.FieldHeight, color)
+		ui.setCell(xShift+i, yShift+game.VisibleFieldHeight, color)
 	}
 }
 
-func (ui *UI) renderField(fields game.Field) {
+func (ui *UI) renderField(fields game.VisibleField) {
 	const xShift = 5
 	const yShift = 5
 	const emptyCellColor = termbox.ColorBlack
 
-	for x := 0; x < game.FieldWith; x++ {
-		for y := 0; y < game.FieldHeight; y++ {
+	for x := 0; x < game.VisibleFieldWith; x++ {
+		for y := 0; y < game.VisibleFieldHeight; y++ {
 			cell := fields[y][x]
 
 			if cell.Filled {

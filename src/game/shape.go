@@ -1,6 +1,8 @@
 package game
 
-import "tetris/src/shape"
+import (
+	"tetris/src/shape"
+)
 
 type Shape struct {
 	shape.Shape

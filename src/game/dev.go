@@ -15,7 +15,7 @@ const (
 )
 
 type jsonDto struct {
-	State Snapshot
+	State
 }
 
 func mustNil(e error) {

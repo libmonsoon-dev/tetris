@@ -36,16 +36,14 @@ func (game *Game) validateRotation() bool {
 	nextState := game.fallingFigure.Copy()
 	nextState.Rotate()
 
-	//TODO: refactor it
-	return game.state.Field.CanBeSet(nextState)
+	return game.state.FullField.CanBeSet(nextState)
 }
 
 func (game *Game) validateMove(distance int) bool {
 	nextState := game.fallingFigure.Copy()
 	nextState.X += distance
 
-	//TODO: refactor it
-	return game.state.Field.CanBeSet(nextState)
+	return game.state.FullField.CanBeSet(nextState)
 }
 
 func (game *Game) doAction(action Action) {
@@ -102,7 +100,7 @@ func (game *Game) pauseSwitch() {
 }
 
 func (game Game) updateState() {
-	game.updates <- game.state
+	game.updates <- game.state.GetSnapshot()
 }
 
 func (game *Game) initTicker() {

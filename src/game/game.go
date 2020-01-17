@@ -6,7 +6,7 @@ type Game struct {
 	actions       chan Action
 	updates       chan Snapshot
 	pause         chan struct{}
-	state         Snapshot
+	state         State
 	fallingFigure fallingFigure
 }
 
@@ -16,10 +16,10 @@ func New() *Game {
 		actions: make(chan Action, actionsChanCap),
 		updates: make(chan Snapshot, updatesChanCap),
 		pause:   make(chan struct{}),
-		state: Snapshot{
-			Field: Field{},
-			Score: 0,
-			Next:  RandomShape(),
+		state: State{
+			FullField: FullField{},
+			Score:     0,
+			Next:      RandomShape(),
 		},
 	}
 	game.newFallingFigure()
