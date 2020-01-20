@@ -9,6 +9,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.6 // indirect
 	github.com/mattn/go-shellwords v1.0.6 // indirect
 	github.com/nsf/termbox-go v0.0.0-20190817171036-93860e161317
+	github.com/sourcegraph/gostringer v0.0.0-20170412223530-cd0142490e8a // indirect
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518 // indirect
 	github.com/urfave/cli v1.21.0 // indirect
 	golang.org/x/crypto v0.0.0-20191029031824-8986dd9e96cf // indirect

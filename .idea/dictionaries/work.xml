@@ -3,6 +3,7 @@
     <words>
       <w>entrypoint</w>
       <w>gomobile</w>
+      <w>gostringer</w>
       <w>ldflags</w>
       <w>libmonsoon</w>
       <w>makeflags</w>

@@ -2,6 +2,9 @@ package game
 
 type Color int
 
+//go:generate gostringer -type=Color
+//go:generate stringer -type=Color
+
 const (
 	ColorDefault Color = iota
 	ColorBlack
