@@ -17,28 +17,20 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	for func() (restart bool) {
-		logicComponent := game.DevRestore()
-		defer logicComponent.DevDump()
+	logicComponent := game.DevRestore()
+	defer logicComponent.DevDump()
 
-		tetris := app.New(
-			&console.UI{},
-			logicComponent,
-		)
-		tetris.Init()
-		defer tetris.Close()
+	tetris := app.New(
+		&console.UI{},
+		logicComponent,
+	)
+	tetris.Init()
+	defer tetris.Close()
 
-		go tetris.MainLoop()
+	go tetris.MainLoop()
 
-		select {
-		case <-tetris.Wait():
-			restart = true
-		case <-signals:
-			restart = false
-		}
-
-		return
-	}() {}
-
-
+	select {
+	case <-tetris.Wait():
+	case <-signals:
+	}
 }
