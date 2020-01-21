@@ -1,6 +1,8 @@
 package game
 
-import "time"
+import (
+	"time"
+)
 
 const (
 	fallingFigureXShift = 3
@@ -64,21 +66,40 @@ func (game *Game) doAction(action Action) {
 }
 
 func (game *Game) processNextStep() {
-	game.state.Remove(game.fallingFigure)
-
-	game.fallingFigure.point.Y++
-	if game.state.IsAtBottom(game.fallingFigure) {
-		game.fallingFigure.point.Y--
-		game.state.Set(game.fallingFigure)
-		game.checkGameOver()
-		game.clearLines()
-		game.newFallingFigure()
+	game.hideFallingFigure()
+	if !game.isFallingFigureAtBottom() {
+		game.fallingFigure.Down()
+		game.writeFallingFigure()
+		return
 	}
+
+	game.writeFallingFigure() // we fix the figure, it no longer falls and now is a static part of the field
+	game.checkGameOver()
+	game.clearLines()
+	game.newFallingFigure()
+
+	game.writeFallingFigure()
+}
+
+func (game *Game) isFallingFigureAtBottom() bool {
+	return game.state.IsAtBottom(game.fallingFigure)
+}
+
+func (game *Game) hideFallingFigure() {
+	game.state.Remove(game.fallingFigure)
+}
+
+func (game *Game) writeFallingFigure() {
 	game.state.Set(game.fallingFigure)
 }
 
-//TODO:
-func (game *Game) checkGameOver() {}
+func (game *Game) checkGameOver() {
+	game.state.GameOver = game.state.FullField.haveActiveInvisibleCells()
+
+	if game.state.GameOver {
+		game.Exit()
+	}
+}
 
 //TODO:
 func (game *Game) clearLines() {}

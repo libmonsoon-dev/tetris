@@ -44,6 +44,8 @@ func (game *Game) MainLoop() {
 	for {
 		select {
 		case <-game.close:
+			//TODO: render game over screen
+			println("Game over! Score:", game.state.Score)
 			return
 		case action := <-game.actions:
 			game.processAction(action)

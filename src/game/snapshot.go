@@ -2,7 +2,8 @@ package game
 
 type Snapshot struct {
 	VisibleField
-	Score   int
-	Next    Shape
-	OnPause bool
+	Score    int
+	Next     Shape
+	OnPause  bool
+	GameOver bool
 }

@@ -2,9 +2,10 @@ package game
 
 type State struct {
 	FullField
-	Score   int
-	Next    Shape
-	OnPause bool
+	Score    int
+	Next     Shape
+	OnPause  bool
+	GameOver bool
 }
 
 func (s State) GetSnapshot() Snapshot {
@@ -13,6 +14,7 @@ func (s State) GetSnapshot() Snapshot {
 		s.Score,
 		s.Next,
 		s.OnPause,
+		s.GameOver,
 	}
 
 }

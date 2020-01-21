@@ -7,6 +7,7 @@ import (
 const (
 	FullFieldWith   = VisibleFieldWith
 	FullFieldHeight = VisibleFieldHeight + 10
+	heightDiff      = FullFieldHeight - VisibleFieldHeight
 )
 
 type FullField [FullFieldHeight][FullFieldWith]Cell
@@ -16,7 +17,7 @@ type FullField [FullFieldHeight][FullFieldWith]Cell
 func (field *FullField) Set(figure fallingFigure) {
 	state := figure.GetCurrentState()
 	for point := range field.indexGenerator(state, figure.point) {
-		if !inBounds(point) {
+		if !inFullFieldBounds(point) {
 			continue
 		}
 
@@ -30,7 +31,7 @@ func (field *FullField) Set(figure fallingFigure) {
 func (field *FullField) Remove(figure fallingFigure) {
 	state := figure.GetCurrentState()
 	for point := range field.indexGenerator(state, figure.point) {
-		if !inBounds(point) {
+		if !inFullFieldBounds(point) {
 			continue
 		}
 
@@ -41,11 +42,12 @@ func (field *FullField) Remove(figure fallingFigure) {
 func (field *FullField) IsAtBottom(figure fallingFigure) bool {
 	state := figure.GetCurrentState()
 	for point := range field.indexGenerator(state, figure.point) {
-		if isAbove(point) {
+		if isAboveField(point) {
 			continue
 		}
 
-		if isBelow(point) || field[point.Y][point.X].Filled {
+		point.Down()
+		if isBelowFullField(point) || field[point.Y][point.X].Filled {
 			return true
 		}
 	}
@@ -56,7 +58,7 @@ func (field *FullField) IsAtBottom(figure fallingFigure) bool {
 func (field *FullField) CanBeSet(figure fallingFigure) bool {
 	state := figure.GetCurrentState()
 	for point := range field.indexGenerator(state, figure.point) {
-		if !inBounds(point) {
+		if !inFullFieldBounds(point) {
 			return false
 		}
 	}
@@ -87,8 +89,6 @@ func (FullField) indexGenerator(shapeState shape.State, shift point) <-chan poin
 }
 
 func (field *FullField) getVisiblePath() (result VisibleField) {
-	const heightDiff = FullFieldHeight - VisibleFieldHeight
-
 	for i := range result {
 		for j := range result[i] {
 			result[i][j] = field[i+heightDiff][j]
@@ -98,14 +98,14 @@ func (field *FullField) getVisiblePath() (result VisibleField) {
 	return
 }
 
-func isAbove(index point) bool {
-	return index.Y < 0
-}
+func (field *FullField) haveActiveInvisibleCells() bool {
+	for i := 0; i < heightDiff; i++ {
+		for j := range field[i] {
+			if field[i][j].Filled {
+				return true
+			}
+		}
+	}
 
-func isBelow(index point) bool {
-	return index.Y >= FullFieldHeight
-}
-
-func inBounds(index point) bool {
-	return !isAbove(index) && !isBelow(index) && index.X >= 0 && index.X < FullFieldWith
+	return false
 }

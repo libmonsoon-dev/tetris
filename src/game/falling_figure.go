@@ -8,7 +8,3 @@ type fallingFigure struct {
 func (f fallingFigure) Copy() fallingFigure {
 	return f
 }
-
-func (f *fallingFigure) Move(distance int) {
-	f.X += distance
-}
